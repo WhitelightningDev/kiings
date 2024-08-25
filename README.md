@@ -27,8 +27,8 @@ This is a web-based car wash booking application that allows users to schedule c
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/car-wash-booking-app.git
-   cd car-wash-booking-app
+   git clone https://github.com/WhitelightningDev/kiings
+   cd Kiings
    ```
 
 2. **Install dependencies**:
