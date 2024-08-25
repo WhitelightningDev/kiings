@@ -1,0 +1,24 @@
+.nav-logo{
+    width:25%;
+}
+
+button{
+    background-color: gold !important;
+}
+
+.home-page {
+    color: #ffffff; /* Default text color */
+  }
+  
+  .form-label {
+    font-weight: 500; /* Bold labels for better visibility */
+  }
+  
+  .list-group-item {
+    background-color: rgba(0, 0, 0, 0.5); /* Darker background for list items */
+  }
+  
+  .btn-warning {
+    background-color: #ffc107; /* Custom color for buttons */
+  }
+  

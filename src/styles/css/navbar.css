@@ -1,0 +1,16 @@
+/* Navbar.css */
+.nav-link.active {
+    background-color: gold !important;
+    color: rgb(0, 0, 0) !important;
+    border-color: gold !important;
+  }
+  
+  .nav-link {
+    color: #000 !important;
+  }
+  
+  .nav-link:hover {
+    background-color: #ffd700;
+    color: rgb(12, 11, 11) !important;
+  }
+  

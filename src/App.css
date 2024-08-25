@@ -2,6 +2,41 @@
   text-align: center;
 }
 
+*{
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+/* src/App.css */
+
+body {
+  background-image: url('./assets/kings-carwash-bg.jpg'); /* Update the path if necessary */
+  background-size: cover; /* Cover the entire background */
+  background-repeat: no-repeat; /* Prevent repeating the image */
+  background-attachment: fixed; /* Fix the background image while scrolling */
+  background-position: center; /* Center the background image */
+  min-height: 100vh; /* Ensure the background covers the full height */
+  margin: 0; /* Remove default margin */
+  
+}
+
+.list-group-item{
+  background-color: aliceblue;
+}
+
+.nav-link.active {
+  background-color: gold !important;
+  color: white !important;
+  border-color: gold !important;
+}
+
+
+.nav-link:hover {
+  background-color: #ffd700;
+  color: white !important;
+}
+
+
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -36,3 +71,7 @@
     transform: rotate(360deg);
   }
 }
+
+
+
+
