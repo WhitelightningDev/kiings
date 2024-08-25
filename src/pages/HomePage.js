@@ -13,13 +13,16 @@ function HomePage() {
   const [additionalSelections, setAdditionalSelections] = useState([]);
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
-  const [availableSlots, setAvailableSlots] = useState([]); // New state for available time slots
+  const [availableSlots, setAvailableSlots] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [carModel, setCarModel] = useState('');
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
+  const [subscription, setSubscription] = useState(false);
+  const [serviceLocation, setServiceLocation] = useState('come'); // Default to "Come to Me"
+  const [address, setAddress] = useState('');
 
   const handleWashChange = (event) => {
     const selectedWashType = washTypes.find((wash) => wash.name === event.target.value);
@@ -35,19 +38,18 @@ function HomePage() {
     }
   };
 
-  // Fetch available time slots when date is selected
   useEffect(() => {
     const fetchAvailableSlots = async () => {
       if (date) {
         try {
           const response = await axios.get(`http://localhost:3030/api/available-slots?date=${date}`);
           setAvailableSlots(response.data);
-          setTime(''); // Reset time when date changes
+          setTime('');
         } catch (error) {
           console.error('Error fetching available slots:', error);
         }
       } else {
-        setAvailableSlots([]); // Clear available slots if date is not selected
+        setAvailableSlots([]);
       }
     };
 
@@ -88,6 +90,9 @@ function HomePage() {
       date,
       time,
       email,
+      subscription: subscription ? 'Monthly Subscription - R300' : 'No Subscription',
+      serviceLocation, // Include serviceLocation
+      address: serviceLocation === 'come' ? address : '', // Include address if serviceLocation is 'come'
     };
 
     try {
@@ -97,7 +102,6 @@ function HomePage() {
         autoClose: 5000,
       });
 
-      // Reset the form
       setSelectedWash(null);
       setAdditionalSelections([]);
       setDate('');
@@ -106,7 +110,10 @@ function HomePage() {
       setLastName('');
       setCarModel('');
       setEmail('');
-      setAvailableSlots([]); // Reset available slots
+      setSubscription(false);
+      setServiceLocation('come'); // Reset serviceLocation to default
+      setAddress(''); // Reset address
+      setAvailableSlots([]);
     } catch (error) {
       console.error('There was an error making the booking!', error);
       toast.error('Booking failed. Please try again.', {
@@ -216,6 +223,53 @@ function HomePage() {
                     <div className="invalid-feedback">Please select a time.</div>
                   </div>
                 </div>
+                <div className="col-12 mt-3">
+                    <h5 className="text-light">Service Location</h5>
+                    <div className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        name="serviceLocation"
+                        id="comeToMe"
+                        value="come"
+                        checked={serviceLocation === 'come'}
+                        onChange={() => setServiceLocation('come')}
+                      />
+                      <label className="form-check-label text-light" htmlFor="comeToMe">
+                        Come to Me
+                      </label>
+                    </div>
+                    <div className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        name="serviceLocation"
+                        id="goToWash"
+                        value="go"
+                        checked={serviceLocation === 'go'}
+                        onChange={() => setServiceLocation('go')}
+                      />
+                      <label className="form-check-label text-light" htmlFor="goToWash">
+                        Go to Wash
+                      </label>
+                    </div>
+                  </div>
+
+                  {serviceLocation === 'come' && (
+                    <div className="col-12">
+                      <label htmlFor="address" className="form-label text-light">Address</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="address"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                        placeholder="Enter your address"
+                        required
+                      />
+                      <div className="invalid-feedback">Please enter your address.</div>
+                    </div>
+                  )}
 
                 <hr className="my-4" />
                 <button className="w-100 btn btn-warning btn-lg" type="submit" disabled={loading}>
@@ -223,6 +277,8 @@ function HomePage() {
                 </button>
               </form>
             </div>
+
+            
 
             <div className="col-md-4">
               <h4 className="mb-3 badge text-bg-warning rounded-pill mt-3">Summary</h4>
@@ -250,7 +306,26 @@ function HomePage() {
                   <strong>{totalPrice.toFixed(2)}</strong>
                 </li>
               </ul>
+
+              <h4 className="mb-3 badge text-bg-warning rounded-pill mt-3">Subscription</h4>
+              <div className="card p-3">
+                <h5 className="card-title">Monthly Car Wash Subscription</h5>
+                <p className="card-text">Subscribe for only ZAR 300/month and get unlimited car washes.</p>
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    id="subscription"
+                    checked={subscription}
+                    onChange={(e) => setSubscription(e.target.checked)}
+                  />
+                  <label className="form-check-label" htmlFor="subscription">
+                    Opt-in for the subscription
+                  </label>
+                </div>
+              </div>
             </div>
+
           </div>
         </main>
       </div>

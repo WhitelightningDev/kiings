@@ -24,7 +24,7 @@ function Navbar() {
           </NavLink>
         </li>
         <li className="nav-item">
-          <NavLink to="/faqs" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
+          <NavLink to="/faqpage" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
             FAQs
           </NavLink>
         </li>
