@@ -1,70 +1,75 @@
-# Getting Started with Create React App
+# Car Wash Booking Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Developed by **WhitelightningDev**
 
-## Available Scripts
+## Overview
 
-In the project directory, you can run:
+This is a web-based car wash booking application that allows users to schedule car washes with additional services. The app features a clean, user-friendly interface where customers can select a wash type, add extra services, choose a preferred date and time, and receive email confirmations. It also sends notifications to the admin about new bookings.
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Booking Form**: Users can fill out a form to book their car wash, specifying details like the type of wash, additional services, and scheduling preferences.
+- **Dynamic Pricing**: The application calculates the total cost based on the selected wash type and additional services.
+- **Email Notifications**: After a successful booking, the user receives a confirmation email, and the admin is notified of the new booking.
+- **Responsive Design**: The interface is designed to be responsive and mobile-friendly.
+- **Styled with Bootstrap**: The application leverages Bootstrap for a modern and consistent look.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Tech Stack
 
-### `npm test`
+- **Frontend**: React.js
+- **Backend**: Node.js, Express.js
+- **Email Handling**: Nodemailer
+- **Styling**: Bootstrap, custom CSS
+- **State Management**: React hooks
+- **HTTP Client**: Axios
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Installation
 
-### `npm run build`
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/yourusername/car-wash-booking-app.git
+   cd car-wash-booking-app
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. **Setup environment variables**:
+   - Create a `.env` file in the root directory and configure the following variables:
+     ```
+     EMAIL_USER=your-email@gmail.com
+     EMAIL_PASS=your-email-password
+     ADMIN_EMAIL=admin-email@example.com
+     PORT=3030
+     ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+4. **Run the application**:
+   ```bash
+   npm start
+   ```
 
-### `npm run eject`
+   The app will be available at `http://localhost:3030`.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Usage
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- **Booking a Car Wash**: Navigate to the homepage, fill in the required fields, and submit the form. You will receive a confirmation email shortly after.
+- **Admin Notifications**: Admin will receive an email notification for each new booking made through the application.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Project Structure
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- **/src**: Contains all the React components, styles, and assets.
+  - **/components**: Reusable React components.
+  - **/assets**: Static files like images.
+  - **/styles**: Custom CSS files.
+  - **/functions**: Contains utility functions such as `washData.js`.
+- **server.js**: The backend server file that handles bookings and email notifications.
 
-## Learn More
+## Contributing
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+If you wish to contribute to this project, feel free to fork the repository, make your changes, and submit a pull request. Contributions are welcome!
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## License
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project is open-source and available under the MIT License.
