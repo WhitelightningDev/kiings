@@ -1,39 +1,54 @@
 import React from "react";
+import { Grid, Card, CardContent, Typography, Container } from "@mui/material";
 import { washTypes, additionalServices } from "../functions/washData";
 
 function PricingPage() {
-    console.log(washTypes, additionalServices); // Add this line
+    console.log(washTypes, additionalServices); // Log wash types and additional services
 
     return (
-        <div className="container mt-5">
-            <h1 className="text-center text-warning mb-4">Pricing Page</h1>
-            <div className="row">
+        <Container maxWidth="lg" sx={{ mt: 5 }}>
+            <Typography variant="h4" component="h1" align="center" color="warning.main" gutterBottom>
+                Pricing Page
+            </Typography>
+            <Grid container spacing={4}>
                 {washTypes.map((wash, index) => (
-                    <div key={index} className="col-md-4 mb-4">
-                        <div className="card shadow-sm h-100">
-                            <div className="card-body">
-                                <h5 className="card-title">{wash.name}</h5>
-                                <h6 className="card-subtitle mb-2 text-muted">ZAR {wash.price.toFixed(2)}</h6>
-                                <p className="card-text">{wash.details}</p>
-                            </div>
-                        </div>
-                    </div>
+                    <Grid item key={index} xs={12} sm={6} md={4}>
+                        <Card variant="outlined" sx={{ height: '100%' }}>
+                            <CardContent>
+                                <Typography variant="h5" component="h2">
+                                    {wash.name}
+                                </Typography>
+                                <Typography variant="subtitle1" color="text.secondary">
+                                    ZAR {wash.price.toFixed(2)}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    {wash.details}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
                 ))}
-            </div>
-            <h2 className="text-center text-warning mb-4 mt-5">Additional Services</h2>
-            <div className="row">
+            </Grid>
+            <Typography variant="h5" component="h2" align="center" color="warning.main" gutterBottom sx={{ mt: 5 }}>
+                Additional Services
+            </Typography>
+            <Grid container spacing={4}>
                 {additionalServices.map((service, index) => (
-                    <div key={index} className="col-md-4 mb-4">
-                        <div className="card shadow-sm h-100">
-                            <div className="card-body">
-                                <h5 className="card-title">{service.name}</h5>
-                                <h6 className="card-subtitle mb-2 text-muted">ZAR {service.price.toFixed(2)}</h6>
-                            </div>
-                        </div>
-                    </div>
+                    <Grid item key={index} xs={12} sm={6} md={4}>
+                        <Card variant="outlined" sx={{ height: '100%' }}>
+                            <CardContent>
+                                <Typography variant="h5" component="h2">
+                                    {service.name}
+                                </Typography>
+                                <Typography variant="subtitle1" color="text.secondary">
+                                    ZAR {service.price.toFixed(2)}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
                 ))}
-            </div>
-        </div>
+            </Grid>
+        </Container>
     );
 }
 

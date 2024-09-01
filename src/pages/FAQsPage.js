@@ -1,7 +1,6 @@
 import React from 'react';
-import Accordion from 'react-bootstrap/Accordion';
-import Card from 'react-bootstrap/Card';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { Accordion, AccordionSummary, AccordionDetails, Typography, Container } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 function FAQsPage() {
     const faqs = [
@@ -23,17 +22,25 @@ function FAQsPage() {
     ];
 
     return (
-        <div className="container mt-5 mb-5">
-            <h1 className="text-center text-warning mb-4">Frequently Asked Questions</h1>
-            <Accordion>
-                {faqs.map((faq, index) => (
-                    <Accordion.Item eventKey={String(index)} key={index}>
-                        <Accordion.Header>{faq.question}</Accordion.Header>
-                        <Accordion.Body>{faq.answer}</Accordion.Body>
-                    </Accordion.Item>
-                ))}
-            </Accordion>
-        </div>
+        <Container maxWidth="lg" sx={{ mt: 5, mb: 5 }}>
+            <Typography variant="h4" component="h1" align="center" color="warning.main" gutterBottom>
+                Frequently Asked Questions
+            </Typography>
+            {faqs.map((faq, index) => (
+                <Accordion key={index} sx={{ mb: 2 }}>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls={`panel${index}-content`}
+                        id={`panel${index}-header`}
+                    >
+                        <Typography variant="h6">{faq.question}</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <Typography variant="body1">{faq.answer}</Typography>
+                    </AccordionDetails>
+                </Accordion>
+            ))}
+        </Container>
     );
 }
 
