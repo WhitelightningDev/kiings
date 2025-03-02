@@ -1,5 +1,5 @@
 import React from 'react';
-import { Accordion, AccordionSummary, AccordionDetails, Typography, Container } from '@mui/material';
+import { Accordion, AccordionSummary, AccordionDetails, Typography, Container, Link } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 function FAQsPage() {
@@ -14,7 +14,9 @@ function FAQsPage() {
         { question: "What payment methods do you accept?", answer: "We accept various payment methods including credit/debit cards, mobile payments, and cash. Payment can be made online or in person." },
         { question: "Is there a loyalty program for regular customers?", answer: "Yes, we have a loyalty program that rewards regular customers with discounts and special offers. Please inquire at our location for more details." },
         { question: "How long does a car wash typically take?", answer: "A standard car wash usually takes between 20 to 45 minutes, depending on the service type and any additional services selected." },
-        { question: "What should I do if I am not satisfied with the service?", answer: "Your satisfaction is our priority. If you're not satisfied with our service, please contact us immediately, and we'll do our best to resolve the issue." },
+        { question: "What should I do if I am not satisfied with the service?", answer: (
+            <>Your satisfaction is our priority. If you're not satisfied with our service, please contact us immediately, and we'll do our best to resolve the issue. If you are satisfied, please <Link href="https://g.page/r/CQpuxQoDIfDdEBM/review" target="_blank" rel="noopener">Review us</Link>.</>
+        ) },
         { question: "Are your cleaning products environmentally friendly?", answer: "Yes, we use environmentally friendly products that are safe for both your vehicle and the environment." },
         { question: "Can I drop off my car and pick it up later?", answer: "Yes, you can drop off your car and pick it up at a later time. We will contact you once your vehicle is ready for pickup." },
         { question: "Do I need to be present during the car wash?", answer: "No, you do not need to be present. You can leave your car with us, and we'll take care of the rest. We'll notify you when the car is ready." },

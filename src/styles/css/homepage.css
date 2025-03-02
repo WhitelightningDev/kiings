@@ -22,3 +22,13 @@ button{
     background-color: #ffc107; /* Custom color for buttons */
   }
   
+
+  @keyframes scrollText {
+    from {
+      left: 100%;
+    }
+    to {
+      left: -100%;
+    }
+  }
+  

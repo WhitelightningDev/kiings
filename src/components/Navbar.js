@@ -1,35 +1,41 @@
-// src/components/Navbar.js
 import React from 'react';
-import { NavLink } from 'react-router-dom';  // Import NavLink
-import NavLogo from '../assets/kings-logo.png';  // Update the path if necessary
-import '../styles/css/navbar.css'; // Create a separate CSS file for navbar styles
-import '../App.css'
+import { NavLink } from 'react-router-dom';
+import NavLogo from '../assets/kings-logo.png';
+import '../styles/css/navbar.css';
+import '../App.css';
+
 function Navbar() {
   return (
-    <header className="d-flex flex-wrap justify-content-between align-items-center py-3 mb-4 border-bottom">
-      <NavLink to="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-        <img className='nav-logo me-3' src={NavLogo} alt='nav-logo' />
-        <span className="fs-4">Kiings Mobile Car Wash</span>
-      </NavLink>
-
-      <ul className="nav nav-pills justify-content-center flex-grow-1">
-        <li className="nav-item">
-          <NavLink to="/home" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} aria-current="page">
-            Home
-          </NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink to="/pricingPage" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
-            Pricing
-          </NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink to="/faqpage" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
-            FAQs
-          </NavLink>
-        </li>
-      </ul>
-    </header>
+    <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+      <div className="container">
+        <NavLink to="/" className="navbar-brand d-flex align-items-center">
+          <img className='nav-logo me-2' src={NavLogo} alt='nav-logo' width="50" height="50" />
+          <span className="fs-4 fw-bold">Kiings Mobile Car Wash</span>
+        </NavLink>
+        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ul className="navbar-nav">
+            <li className="nav-item">
+              <NavLink to="/home" className={({ isActive }) => `nav-link ${isActive ? 'active fw-bold' : ''}`}>
+                Home
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink to="/pricingPage" className={({ isActive }) => `nav-link ${isActive ? 'active fw-bold' : ''}`}>
+                Pricing
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink to="/faqpage" className={({ isActive }) => `nav-link ${isActive ? 'active fw-bold' : ''}`}>
+                FAQs
+              </NavLink>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
   );
 }
 
