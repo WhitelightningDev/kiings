@@ -15,6 +15,10 @@ import {
   RadioGroup,
   FormControl,
   FormLabel,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Select,
   MenuItem,
   InputLabel,
@@ -50,6 +54,7 @@ function HomePage() {
   const [address, setAddress] = useState("");
   // Inside your component:
   const [carCount, setCarCount] = useState(0);
+  const [openDialog, setOpenDialog] = useState(false);
 
   const handleWashChange = (event) => {
     const selectedWashType = washTypes.find(
@@ -119,67 +124,83 @@ function HomePage() {
     calculateTotalPrice();
   }, [selectedWash, additionalSelections]);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setLoading(true);
-
-    const bookingData = {
-      firstName,
-      lastName,
-      carModel,
-      washType: selectedWash
-        ? {
-            name: selectedWash.name,
-            price: selectedWash.price,
-            details: selectedWash.details,
-          }
-        : {},
-      additionalServices: additionalSelections.map((service) => {
-        const serviceData = additionalServices.find((s) => s.name === service);
-        return {
-          name: service,
-          price: serviceData ? serviceData.price : 0,
-        };
-      }),
-      date,
-      time,
-      email,
-      subscription: subscription
-        ? "Monthly Subscription - R300"
-        : "No Subscription",
-      serviceLocation,
-      address: serviceLocation === "come" ? address : "",
-    };
-
-    try {
-      await axios.post("http://localhost:3030/api/bookings", bookingData);
-      toast.success("Booking confirmed!", {
-        position: "top-center",
-        autoClose: 5000,
-      });
-
-      setSelectedWash(null);
-      setAdditionalSelections([]);
-      setDate("");
-      setTime("");
-      setFirstName("");
-      setLastName("");
-      setCarModel("");
-      setEmail("");
-      setSubscription(false);
-      setServiceLocation("come");
-      setAddress("");
-      setAvailableSlots([]);
-    } catch (error) {
-      console.error("There was an error making the booking!", error);
-      toast.error("Booking failed. Please try again.", {
-        position: "top-center",
-        autoClose: 5000,
-      });
-    } finally {
-      setLoading(false);
-    }
+  const handleConfirmBooking = () => {
+    setOpenDialog(false);
+    toast.success("Proceeding to payment...");
+    // Placeholder for future payment integration
   };
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+ const handleSubmit = async (event) => {
+  event.preventDefault();
+  setLoading(true);
+
+  // Show confirmation dialog
+  const isConfirmed = window.confirm("Are you sure you want to confirm this booking?");
+  if (!isConfirmed) {
+    setLoading(false);
+    return; // Stop execution if the user cancels
+  }
+
+  const bookingData = {
+    firstName,
+    lastName,
+    carModel,
+    washType: selectedWash
+      ? {
+          name: selectedWash.name,
+          price: selectedWash.price,
+          details: selectedWash.details,
+        }
+      : {},
+    additionalServices: additionalSelections.map((service) => {
+      const serviceData = additionalServices.find((s) => s.name === service);
+      return {
+        name: service,
+        price: serviceData ? serviceData.price : 0,
+      };
+    }),
+    date,
+    time,
+    email,
+    subscription: subscription ? "Monthly Subscription - R300" : "No Subscription",
+    serviceLocation,
+    address: serviceLocation === "come" ? address : "",
+  };
+
+  try {
+    await axios.post("http://localhost:3030/api/bookings", bookingData);
+    toast.success("Booking confirmed!", {
+      position: "top-center",
+      autoClose: 5000,
+    });
+
+    // Reset form fields after successful booking
+    setSelectedWash(null);
+    setAdditionalSelections([]);
+    setDate("");
+    setTime("");
+    setFirstName("");
+    setLastName("");
+    setCarModel("");
+    setEmail("");
+    setSubscription(false);
+    setServiceLocation("come");
+    setAddress("");
+    setAvailableSlots([]);
+  } catch (error) {
+    console.error("There was an error making the booking!", error);
+    toast.error("Booking failed. Please try again.", {
+      position: "top-center",
+      autoClose: 5000,
+    });
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <>
@@ -526,6 +547,22 @@ function HomePage() {
             </Paper>
           </Grid>
         </Grid>
+        <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Confirm Your Booking</DialogTitle>
+        <DialogContent>
+          <List>
+            <ListItem><ListItemText primary="Name" secondary={`${firstName} ${lastName}`} /></ListItem>
+            <ListItem><ListItemText primary="Car Model" secondary={carModel} /></ListItem>
+            <ListItem><ListItemText primary="Date" secondary={date} /></ListItem>
+            <ListItem><ListItemText primary="Time" secondary={time} /></ListItem>
+            <ListItem><ListItemText primary="Total Price" secondary={`ZAR ${totalPrice.toFixed(2)}`} /></ListItem>
+          </List>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="secondary">Edit</Button>
+          <Button onClick={handleConfirmBooking} color="primary">Continue</Button>
+        </DialogActions>
+      </Dialog>
       </Container>
     </>
   );
