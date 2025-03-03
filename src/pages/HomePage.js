@@ -92,7 +92,7 @@ function HomePage() {
             `http://localhost:3030/api/available-slots?date=${date}`
           );
           setAvailableSlots(response.data);
-          setTime("");
+          setTime(""); // Reset selected time when new slots are fetched
         } catch (error) {
           console.error("Error fetching available slots:", error);
         }
@@ -100,10 +100,10 @@ function HomePage() {
         setAvailableSlots([]);
       }
     };
-
+  
     fetchAvailableSlots();
   }, [date]);
-
+  
   useEffect(() => {
     const calculateTotalPrice = () => {
       let total = selectedWash ? selectedWash.price : 0;
@@ -202,7 +202,7 @@ function HomePage() {
             whiteSpace: "nowrap",
             color: "white",
             position: "absolute",
-            animation: "scrollText 20s linear infinite",
+            animation: "scrollText 17s linear infinite",
           }}
         >
           ⏰ Operating Hours: Monday - Saturday, 8 AM - 6 PM | Book Your Car

@@ -6,7 +6,7 @@ import '../App.css';
 
 function Navbar() {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-lg mb-2">
       <div className="container">
         <NavLink to="/" className="navbar-brand d-flex align-items-center">
           <img className='nav-logo me-2' src={NavLogo} alt='nav-logo' width="50" height="50" />
