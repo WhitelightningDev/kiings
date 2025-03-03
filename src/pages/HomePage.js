@@ -94,7 +94,7 @@ function HomePage() {
       if (date) {
         try {
           const response = await axios.get(
-            `http://localhost:3030/api/available-slots?date=${date}`
+            `https://kiings-backend.onrender.com/api/available-slots?date=${date}`
           );
           setAvailableSlots(response.data);
           setTime(""); // Reset selected time when new slots are fetched
@@ -133,73 +133,93 @@ function HomePage() {
     setOpenDialog(false);
   };
 
- const handleSubmit = async (event) => {
-  event.preventDefault();
-  setLoading(true);
-
-  // Show confirmation dialog
-  const isConfirmed = window.confirm("Are you sure you want to confirm this booking?");
-  if (!isConfirmed) {
-    setLoading(false);
-    return; // Stop execution if the user cancels
-  }
-
-  const bookingData = {
-    firstName,
-    lastName,
-    carModel,
-    washType: selectedWash
-      ? {
-          name: selectedWash.name,
-          price: selectedWash.price,
-          details: selectedWash.details,
-        }
-      : {},
-    additionalServices: additionalSelections.map((service) => {
-      const serviceData = additionalServices.find((s) => s.name === service);
-      return {
-        name: service,
-        price: serviceData ? serviceData.price : 0,
-      };
-    }),
-    date,
-    time,
-    email,
-    subscription: subscription ? "Monthly Subscription - R300" : "No Subscription",
-    serviceLocation,
-    address: serviceLocation === "come" ? address : "",
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+  
+    // Input validation
+    if (!firstName || !lastName || !carModel || !email || !selectedWash || !date || !time || !serviceLocation) {
+      toast.error("Please fill in all required fields.", {
+        position: "top-center",
+        autoClose: 5000,
+      });
+      setLoading(false);
+      return; // Stop execution if any required field is missing
+    }
+  
+    if (serviceLocation === "come" && !address) {
+      toast.error("Please provide an address for home service.", {
+        position: "top-center",
+        autoClose: 5000,
+      });
+      setLoading(false);
+      return; // Stop execution if address is missing for "come" service
+    }
+  
+    // Show confirmation dialog
+    const isConfirmed = window.confirm("Are you sure you want to confirm this booking?");
+    if (!isConfirmed) {
+      setLoading(false);
+      return; // Stop execution if the user cancels
+    }
+  
+    const bookingData = {
+      firstName,
+      lastName,
+      carModel,
+      washType: selectedWash
+        ? {
+            name: selectedWash.name,
+            price: selectedWash.price,
+            details: selectedWash.details,
+          }
+        : {},
+      additionalServices: additionalSelections.map((service) => {
+        const serviceData = additionalServices.find((s) => s.name === service);
+        return {
+          name: service,
+          price: serviceData ? serviceData.price : 0,
+        };
+      }),
+      date,
+      time,
+      email,
+      subscription: subscription ? "Monthly Subscription - R300" : "No Subscription",
+      serviceLocation,
+      address: serviceLocation === "come" ? address : "",
+    };
+  
+    try {
+      await axios.post("https://kiings-backend.onrender.com/api/bookings", bookingData);
+      toast.success("Booking confirmed!", {
+        position: "top-center",
+        autoClose: 5000,
+      });
+  
+      // Reset form fields after successful booking
+      setSelectedWash(null);
+      setAdditionalSelections([]);
+      setDate("");
+      setTime("");
+      setFirstName("");
+      setLastName("");
+      setCarModel("");
+      setEmail("");
+      setSubscription(false);
+      setServiceLocation("come");
+      setAddress("");
+      setAvailableSlots([]);
+    } catch (error) {
+      console.error("There was an error making the booking!", error);
+      toast.error("Booking failed. Please try again.", {
+        position: "top-center",
+        autoClose: 5000,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
-
-  try {
-    await axios.post("http://localhost:3030/api/bookings", bookingData);
-    toast.success("Booking confirmed!", {
-      position: "top-center",
-      autoClose: 5000,
-    });
-
-    // Reset form fields after successful booking
-    setSelectedWash(null);
-    setAdditionalSelections([]);
-    setDate("");
-    setTime("");
-    setFirstName("");
-    setLastName("");
-    setCarModel("");
-    setEmail("");
-    setSubscription(false);
-    setServiceLocation("come");
-    setAddress("");
-    setAvailableSlots([]);
-  } catch (error) {
-    console.error("There was an error making the booking!", error);
-    toast.error("Booking failed. Please try again.", {
-      position: "top-center",
-      autoClose: 5000,
-    });
-  } finally {
-    setLoading(false);
-  }
-};
+  
 
 
   return (
@@ -433,6 +453,7 @@ function HomePage() {
                           id="address"
                           label="Please add your address"
                           value={address}
+                          required
                           onChange={(e) => setAddress(e.target.value)}
                           helperText="(For Home Service only)"
                         />
