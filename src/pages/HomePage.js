@@ -463,18 +463,6 @@ function HomePage() {
                   </Grid>
                 </form>
               </CardContent>
-              <CardActions>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  fullWidth
-                  onClick={handleSubmit}
-                  disabled={loading}
-                >
-                  {loading ? <CircularProgress size={24} /> : "Book Now"}
-                </Button>
-              </CardActions>
             </Card>
           </Grid>
 
@@ -544,25 +532,21 @@ function HomePage() {
                   />
                 </ListItem>
               </List>
+              <CardActions>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  onClick={handleSubmit}
+                  disabled={loading}
+                >
+                  {loading ? <CircularProgress size={24} /> : "Book Now"}
+                </Button>
+              </CardActions>
             </Paper>
           </Grid>
         </Grid>
-        <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>Confirm Your Booking</DialogTitle>
-        <DialogContent>
-          <List>
-            <ListItem><ListItemText primary="Name" secondary={`${firstName} ${lastName}`} /></ListItem>
-            <ListItem><ListItemText primary="Car Model" secondary={carModel} /></ListItem>
-            <ListItem><ListItemText primary="Date" secondary={date} /></ListItem>
-            <ListItem><ListItemText primary="Time" secondary={time} /></ListItem>
-            <ListItem><ListItemText primary="Total Price" secondary={`ZAR ${totalPrice.toFixed(2)}`} /></ListItem>
-          </List>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog} color="secondary">Edit</Button>
-          <Button onClick={handleConfirmBooking} color="primary">Continue</Button>
-        </DialogActions>
-      </Dialog>
       </Container>
     </>
   );
