@@ -144,7 +144,7 @@ function HomePage() {
         autoClose: 5000,
       });
       setLoading(false);
-      return; // Stop execution if any required field is missing
+      return;
     }
   
     if (serviceLocation === "come" && !address) {
@@ -153,14 +153,14 @@ function HomePage() {
         autoClose: 5000,
       });
       setLoading(false);
-      return; // Stop execution if address is missing for "come" service
+      return;
     }
   
     // Show confirmation dialog
     const isConfirmed = window.confirm("Are you sure you want to confirm this booking?");
     if (!isConfirmed) {
       setLoading(false);
-      return; // Stop execution if the user cancels
+      return;
     }
   
     const bookingData = {
@@ -187,31 +187,32 @@ function HomePage() {
       subscription: subscription ? "Monthly Subscription - R300" : "No Subscription",
       serviceLocation,
       address: serviceLocation === "come" ? address : "",
+      totalPrice,
     };
   
     try {
+      // Step 1: Save the booking details in the database
       await axios.post("https://kiings-backend.onrender.com/api/bookings", bookingData);
-      toast.success("Booking confirmed!", {
-        position: "top-center",
-        autoClose: 5000,
+  
+      // Step 2: Initiate payment via Yoco
+      const paymentResponse = await axios.post("https://kiings-backend.onrender.com/api/payments", {
+        firstName,
+        lastName,
+        email,
+        totalPrice,
       });
   
-      // Reset form fields after successful booking
-      setSelectedWash(null);
-      setAdditionalSelections([]);
-      setDate("");
-      setTime("");
-      setFirstName("");
-      setLastName("");
-      setCarModel("");
-      setEmail("");
-      setSubscription(false);
-      setServiceLocation("come");
-      setAddress("");
-      setAvailableSlots([]);
+      if (paymentResponse.data.redirectUrl) {
+        window.location.href = paymentResponse.data.redirectUrl; // Redirect to Yoco for payment
+      } else {
+        toast.error("Failed to initiate payment. Please try again.", {
+          position: "top-center",
+          autoClose: 5000,
+        });
+      }
     } catch (error) {
-      console.error("There was an error making the booking!", error);
-      toast.error("Booking failed. Please try again.", {
+      console.error("Error:", error);
+      toast.error("An error occurred. Please try again.", {
         position: "top-center",
         autoClose: 5000,
       });
@@ -219,6 +220,7 @@ function HomePage() {
       setLoading(false);
     }
   };
+  
   
 
 
@@ -435,7 +437,7 @@ function HomePage() {
                           <FormControlLabel
                             value="come"
                             control={<Radio />}
-                            label="Come to Us"
+                            label="Come to Me(Add Address Below)"
                           />
                           <FormControlLabel
                             value="home"
@@ -478,6 +480,9 @@ function HomePage() {
                       <Box sx={{ mt: 2 }}>
                         <Typography variant="h6">
                           Total Price: ZAR {totalPrice.toFixed(2)}
+                        </Typography>
+                        <Typography className="text-center text-bg-info">
+                          continue to booking summary to complete booking
                         </Typography>
                       </Box>
                     </Grid>
