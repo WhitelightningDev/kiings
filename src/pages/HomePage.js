@@ -195,7 +195,7 @@ function HomePage() {
       await axios.post("https://kiings-backend.onrender.com/api/bookings", bookingData);
   
       // Step 2: Initiate payment via Yoco
-      const paymentResponse = await axios.post("https://kiings-backend.onrender.com/api/payments", {
+      const paymentResponse = await axios.post("https://payments.yoco.com/api/checkouts", {
         firstName,
         lastName,
         email,
