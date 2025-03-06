@@ -15,10 +15,6 @@ import {
   RadioGroup,
   FormControl,
   FormLabel,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   Select,
   MenuItem,
   InputLabel,
@@ -53,8 +49,8 @@ function HomePage() {
   const [serviceLocation, setServiceLocation] = useState("come");
   const [address, setAddress] = useState("");
   // Inside your component:
-  const [carCount, setCarCount] = useState(0);
-  const [openDialog, setOpenDialog] = useState(false);
+
+ 
 
   const handleWashChange = (event) => {
     const selectedWashType = washTypes.find(
@@ -74,20 +70,7 @@ function HomePage() {
     }
   };
 
-  useEffect(() => {
-    let count = 0;
-    const interval = setInterval(() => {
-      count += 5; // Increments in steps of 5 for a smooth effect
-      if (count >= 300) {
-        setCarCount(300);
-        clearInterval(interval);
-      } else {
-        setCarCount(count);
-      }
-    }, 50); // Adjust speed (lower value = faster)
-
-    return () => clearInterval(interval); // Cleanup
-  }, []);
+  
 
   useEffect(() => {
     const fetchAvailableSlots = async () => {
@@ -123,15 +106,6 @@ function HomePage() {
 
     calculateTotalPrice();
   }, [selectedWash, additionalSelections]);
-
-  const handleConfirmBooking = () => {
-    setOpenDialog(false);
-    toast.success("Proceeding to payment...");
-    // Placeholder for future payment integration
-  };
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -187,18 +161,23 @@ function HomePage() {
       subscription: subscription ? "Monthly Subscription - R300" : "No Subscription",
       serviceLocation,
       address: serviceLocation === "come" ? address : "",
-      totalPrice: selectedWash ? selectedWash.price + additionalSelections.reduce((acc, service) => {
-        const serviceData = additionalServices.find((s) => s.name === service);
-        return acc + (serviceData ? serviceData.price : 0);
-      }, 0) : 0,
+      totalPrice: selectedWash
+        ? selectedWash.price +
+          additionalSelections.reduce((acc, service) => {
+            const serviceData = additionalServices.find((s) => s.name === service);
+            return acc + (serviceData ? serviceData.price : 0);
+          }, 0)
+        : 0,
     };
   
     try {
       const response = await axios.post("https://kiings-backend.onrender.com/api/book", bookingData);
+  
       const { redirectUrl } = response.data;
-      
+  
       if (redirectUrl) {
-        window.location.href = redirectUrl; // Redirect to Yoco checkout page
+        // Redirect to Yoco checkout page
+        window.location.href = redirectUrl;
       } else {
         toast.error("Failed to initiate payment.", {
           position: "top-center",
@@ -206,7 +185,7 @@ function HomePage() {
         });
       }
     } catch (error) {
-      console.error("There was an error making the booking!", error);
+      console.error("Error making the booking:", error);
       toast.error("Booking failed. Please try again.", {
         position: "top-center",
         autoClose: 5000,
@@ -215,6 +194,7 @@ function HomePage() {
       setLoading(false);
     }
   };
+  
 
   
 
@@ -270,16 +250,7 @@ function HomePage() {
           </CardContent>
         </Card>
 
-        <Grid container spacing={5} >
-          <Card  sx={{ m: 5}} >
-            {/* New Section for Total Cars Washed */}
-            <Box sx={{ mt: 1, p: 2, borderRadius: 3 }}>
-              <Typography variant="h6" color="black">
-                Total Cars Washed: {carCount}
-              </Typography>
-            </Box>
-          </Card>
-        </Grid>
+      
 
         <Grid container spacing={4}>
           <Grid item xs={12} md={8}>

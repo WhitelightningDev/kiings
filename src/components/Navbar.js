@@ -4,6 +4,7 @@ import NavLogo from '../assets/kings-logo.png';
 import '../styles/css/navbar.css';
 import '../App.css';
 
+
 function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-lg mb-2">
@@ -28,10 +29,16 @@ function Navbar() {
               </NavLink>
             </li>
             <li className="nav-item">
+              <NavLink to="/bookings" className={({ isActive }) => `nav-link ${isActive ? 'active fw-bold' : ''}`}>
+                Bookings
+              </NavLink>
+            </li>
+            <li className="nav-item">
               <NavLink to="/faqpage" className={({ isActive }) => `nav-link ${isActive ? 'active fw-bold' : ''}`}>
                 FAQs
               </NavLink>
             </li>
+          
           </ul>
         </div>
       </div>
