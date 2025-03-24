@@ -6,6 +6,8 @@ import HomePage from './pages/HomePage';
 import PricingPage from './pages/pricingPage';
 import Bookings from './pages/Bookings';
 import FAQsPage from './pages/FAQsPage'
+import Success from './pages/Success'
+import Error from './pages/Error'
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
         <Route path="/faqpage" element={<FAQsPage />} />
         <Route path="/bookings" element={<Bookings />} />
         <Route path="/" element={<Navigate to="/home" replace />} />
+        <Route path="/success" element={<Success/>} />
+        <Route path="/error" element={<Error/>} />
       </Routes>
     </Router>
   );

@@ -37,8 +37,7 @@ function Navbar() {
               <NavLink to="/faqpage" className={({ isActive }) => `nav-link ${isActive ? 'active fw-bold' : ''}`}>
                 FAQs
               </NavLink>
-            </li>
-          
+            </li>      
           </ul>
         </div>
       </div>
