@@ -137,38 +137,46 @@ function HomePage() {
       return; // Stop execution if the user cancels
     }
   
-    const bookingData = {
-      firstName,
-      lastName,
-      carModel,
-      washType: selectedWash
-        ? {
-            name: selectedWash.name,
-            price: selectedWash.price,
-            details: selectedWash.details,
-          }
-        : {},
-      additionalServices: additionalSelections.map((service) => {
-        const serviceData = additionalServices.find((s) => s.name === service);
-        return {
-          name: service,
-          price: serviceData ? serviceData.price : 0,
-        };
-      }),
-      date,
-      time,
-      email,
-      subscription: subscription ? "Monthly Subscription - R300" : "No Subscription",
-      serviceLocation,
-      address: serviceLocation === "come" ? address : "",
-      totalPrice: selectedWash
-        ? selectedWash.price +
-          additionalSelections.reduce((acc, service) => {
-            const serviceData = additionalServices.find((s) => s.name === service);
-            return acc + (serviceData ? serviceData.price : 0);
-          }, 0)
-        : 0,
-    };
+    const totalPrice =
+    selectedWash && selectedWash.price
+      ? Number(selectedWash.price) +
+        additionalSelections.reduce((acc, service) => {
+          const serviceData = additionalServices.find((s) => s.name === service);
+          return acc + (serviceData ? Number(serviceData.price) : 0);
+        }, 0)
+      : 0;
+  
+  console.log("Total Price Before Sending:", totalPrice); // Debugging log
+  
+  const bookingData = {
+    firstName,
+    lastName,
+    carModel,
+    washType: selectedWash
+      ? {
+          name: selectedWash.name,
+          price: Number(selectedWash.price), // Ensure price is a number
+          details: selectedWash.details,
+        }
+      : {},
+    additionalServices: additionalSelections.map((service) => {
+      const serviceData = additionalServices.find((s) => s.name === service);
+      return {
+        name: service,
+        price: serviceData ? Number(serviceData.price) : 0, // Ensure price is a number
+      };
+    }),
+    date,
+    time,
+    email,
+    subscription: subscription ? "Monthly Subscription - R300" : "No Subscription",
+    serviceLocation,
+    address: serviceLocation === "come" ? address : "",
+    totalPrice, // Use the validated total price
+  };
+  
+  console.log("Booking Data Sent to Backend:", bookingData); // Debugging log
+  
   
     try {
       const response = await axios.post("https://kiings-backend.onrender.com/api/book", bookingData);
