@@ -1,4 +1,5 @@
 export const washTypes = [
+  {name: "TEXTWASH", price: .10, details: "(text wash)"},
   { name: "Wash n Go", price: 80, details: "(Shampoo & Wax, Tire Shine)" },
   {
     name: "Wash & Vacuum",
