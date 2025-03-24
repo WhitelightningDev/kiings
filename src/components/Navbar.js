@@ -8,8 +8,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';  // Bootstrap CSS for responsiven
 function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-lg mb-2">
-      {/* Container for better centering */}
-      <div className="container">
+      {/* Use container-fluid for a full-width navbar, flexbox for alignment */}
+      <div className="container-fluid d-flex justify-content-between align-items-center">
         
         {/* Logo & Branding */}
         <NavLink to="/" className="navbar-brand d-flex align-items-center">
@@ -31,8 +31,8 @@ function Navbar() {
         </button>
 
         {/* Navbar Links (collapses on mobile) */}
-        <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
-          <ul className="navbar-nav">
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav ms-auto">
             {/* Home Link */}
             <li className="nav-item">
               <NavLink to="/" className={({ isActive }) => `nav-link ${isActive ? 'active fw-bold' : ''}`}>
