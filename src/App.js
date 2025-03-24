@@ -12,7 +12,7 @@ function App() {
     <Router>
       <Navbar /> {/* Place the Navbar component here to show it on all pages */}
       <Routes>
-        <Route path="/home" element={<HomePage />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/pricingPage" element={<PricingPage />} />
         <Route path="/faqpage" element={<FAQsPage />} />
         <Route path="/bookings" element={<Bookings />} />

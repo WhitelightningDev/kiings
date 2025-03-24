@@ -19,7 +19,7 @@ function Navbar() {
         <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <NavLink to="/home" className={({ isActive }) => `nav-link ${isActive ? 'active fw-bold' : ''}`}>
+              <NavLink to="/" className={({ isActive }) => `nav-link ${isActive ? 'active fw-bold' : ''}`}>
                 Home
               </NavLink>
             </li>
