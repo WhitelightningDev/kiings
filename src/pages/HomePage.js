@@ -48,7 +48,6 @@ function HomePage() {
   const [subscription, setSubscription] = useState(false);
   const [serviceLocation, setServiceLocation] = useState("come");
   const [address, setAddress] = useState("");
-  // Inside your component:
 
   const handleWashChange = (event) => {
     const selectedWashType = washTypes.find(
@@ -79,6 +78,10 @@ function HomePage() {
           setTime(""); // Reset selected time when new slots are fetched
         } catch (error) {
           console.error("Error fetching available slots:", error);
+          toast.error("Error fetching available slots. Please try again.", {
+            position: "top-center",
+            autoClose: 5000,
+          });
         }
       } else {
         setAvailableSlots([]);
@@ -216,7 +219,7 @@ function HomePage() {
       setLoading(false);
     }
   };
-
+  
   return (
     <>
       <Box
