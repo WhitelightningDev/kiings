@@ -12,7 +12,7 @@ function Navbar() {
         {/* Logo & Branding */}
         <NavLink to="/" className="navbar-brand d-flex align-items-center">
           <img className="nav-logo me-2" src={NavLogo} alt="nav-logo" width="50" height="50" />
-          <span className="fs-4 fw-bold">Kiings Mobile Car Wash</span>
+          <span className="fs-4 fw-bold">Kiings Car Wash</span>
         </NavLink>
 
         {/* Mobile Toggle Button */}
