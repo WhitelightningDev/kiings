@@ -9,7 +9,7 @@ import FAQsPage from './pages/FAQsPage'
 import Success from './pages/Success'
 import Error from './pages/Error'
 import PaymentCanceled from './pages/PaymentCanceled';
-
+ 
 function App() {
   return (
     <Router>
@@ -22,7 +22,8 @@ function App() {
         <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/success" element={<Success/>} />
         <Route path="/error" element={<Error/>} />
-        <Route path="/payment-canceled" component={PaymentCanceled} /> {/* Add route */}
+        <Route path="/paymentcanceled" element={<PaymentCanceled/>}/>
+
       </Routes>
     </Router>
   );
