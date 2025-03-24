@@ -1,5 +1,4 @@
 export const washTypes = [
-  {name: "Test Wash payment", price: 1, details: "(test wash payment)"},
   { name: "Wash n Go", price: 80, details: "(Shampoo & Wax, Tire Shine)" },
   {
     name: "Wash & Vacuum",
