@@ -1,12 +1,12 @@
 import React from 'react';
 import { Container, Typography, Button } from '@mui/material';
-import { useHistory } from 'react-router-dom'; // If using React Router
+import { useNavigate } from 'react-router-dom'; // Correct hook for React Router v6
 
 function PaymentCanceled() {
-  const history = useHistory();
+  const navigate = useNavigate(); // Use navigate instead of useHistory
 
   const handleHomeRedirect = () => {
-    history.push("/"); // Redirects to the homepage
+    navigate("/"); // Redirects to the homepage
   };
 
   return (
