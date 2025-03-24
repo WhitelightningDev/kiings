@@ -50,8 +50,6 @@ function HomePage() {
   const [address, setAddress] = useState("");
   // Inside your component:
 
- 
-
   const handleWashChange = (event) => {
     const selectedWashType = washTypes.find(
       (wash) => wash.name === event.target.value
@@ -70,8 +68,6 @@ function HomePage() {
     }
   };
 
-  
-
   useEffect(() => {
     const fetchAvailableSlots = async () => {
       if (date) {
@@ -88,10 +84,10 @@ function HomePage() {
         setAvailableSlots([]);
       }
     };
-  
+
     fetchAvailableSlots();
   }, [date]);
-  
+
   useEffect(() => {
     const calculateTotalPrice = () => {
       let total = selectedWash ? selectedWash.price : 0;
@@ -110,9 +106,18 @@ function HomePage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-  
+
     // Input validation
-    if (!firstName || !lastName || !carModel || !email || !selectedWash || !date || !time || !serviceLocation) {
+    if (
+      !firstName ||
+      !lastName ||
+      !carModel ||
+      !email ||
+      !selectedWash ||
+      !date ||
+      !time ||
+      !serviceLocation
+    ) {
       toast.error("Please fill in all required fields.", {
         position: "top-center",
         autoClose: 5000,
@@ -120,7 +125,7 @@ function HomePage() {
       setLoading(false);
       return; // Stop execution if any required field is missing
     }
-  
+
     if (serviceLocation === "come" && !address) {
       toast.error("Please provide an address for home service.", {
         position: "top-center",
@@ -129,60 +134,69 @@ function HomePage() {
       setLoading(false);
       return; // Stop execution if address is missing for "come" service
     }
-  
+
     // Show confirmation dialog
-    const isConfirmed = window.confirm("Are you sure you want to confirm this booking?");
+    const isConfirmed = window.confirm(
+      "Are you sure you want to confirm this booking?"
+    );
     if (!isConfirmed) {
       setLoading(false);
       return; // Stop execution if the user cancels
     }
-  
+
     const totalPrice =
-    selectedWash && selectedWash.price
-      ? Number(selectedWash.price) +
-        additionalSelections.reduce((acc, service) => {
-          const serviceData = additionalServices.find((s) => s.name === service);
-          return acc + (serviceData ? Number(serviceData.price) : 0);
-        }, 0)
-      : 0;
-  
-  console.log("Total Price Before Sending:", totalPrice); // Debugging log
-  
-  const bookingData = {
-    firstName,
-    lastName,
-    carModel,
-    washType: selectedWash
-      ? {
-          name: selectedWash.name,
-          price: Number(selectedWash.price), // Ensure price is a number
-          details: selectedWash.details,
-        }
-      : {},
-    additionalServices: additionalSelections.map((service) => {
-      const serviceData = additionalServices.find((s) => s.name === service);
-      return {
-        name: service,
-        price: serviceData ? Number(serviceData.price) : 0, // Ensure price is a number
-      };
-    }),
-    date,
-    time,
-    email,
-    subscription: subscription ? "Monthly Subscription - R300" : "No Subscription",
-    serviceLocation,
-    address: serviceLocation === "come" ? address : "",
-    totalPrice, // Use the validated total price
-  };
-  
-  console.log("Booking Data Sent to Backend:", bookingData); // Debugging log
-  
-  
+      selectedWash && selectedWash.price
+        ? Number(selectedWash.price) +
+          additionalSelections.reduce((acc, service) => {
+            const serviceData = additionalServices.find(
+              (s) => s.name === service
+            );
+            return acc + (serviceData ? Number(serviceData.price) : 0);
+          }, 0)
+        : 0;
+
+    console.log("Total Price Before Sending:", totalPrice); // Debugging log
+
+    const bookingData = {
+      firstName,
+      lastName,
+      carModel,
+      washType: selectedWash
+        ? {
+            name: selectedWash.name,
+            price: Number(selectedWash.price), // Ensure price is a number
+            details: selectedWash.details,
+          }
+        : {},
+      additionalServices: additionalSelections.map((service) => {
+        const serviceData = additionalServices.find((s) => s.name === service);
+        return {
+          name: service,
+          price: serviceData ? Number(serviceData.price) : 0, // Ensure price is a number
+        };
+      }),
+      date,
+      time,
+      email,
+      subscription: subscription
+        ? "Monthly Subscription - R300"
+        : "No Subscription",
+      serviceLocation,
+      address: serviceLocation === "come" ? address : "",
+      totalPrice, // Use the validated total price
+    };
+
+    console.log("Booking Data Sent to Backend:", bookingData); // Debugging log
+
     try {
-      const response = await axios.post("https://kiings-backend.onrender.com/api/book", bookingData);
-  
+      const response = await axios.post(
+        "https://kiings-backend.onrender.com/api/book",
+        bookingData
+      );
+      console.log("Backend Response:", response.data); // Debugging log
+
       const { redirectUrl } = response.data;
-  
+
       if (redirectUrl) {
         // Redirect to Yoco checkout page
         window.location.href = redirectUrl;
@@ -202,10 +216,6 @@ function HomePage() {
       setLoading(false);
     }
   };
-  
-
-  
-
 
   return (
     <>
@@ -257,8 +267,6 @@ function HomePage() {
             </Typography>
           </CardContent>
         </Card>
-
-      
 
         <Grid container spacing={4}>
           <Grid item xs={12} md={8}>
