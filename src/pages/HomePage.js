@@ -48,6 +48,7 @@ function HomePage() {
   const [subscription, setSubscription] = useState(false);
   const [serviceLocation, setServiceLocation] = useState("come");
   const [address, setAddress] = useState("");
+  const isBooking = selectedWash && date && time;
 
   const handleWashChange = (event) => {
     const selectedWashType = washTypes.find(
@@ -93,73 +94,60 @@ function HomePage() {
 
   useEffect(() => {
     const calculateTotalPrice = () => {
-      let total = selectedWash ? selectedWash.price : 0;
+      let total = 0;
+  
+      if (selectedWash) {
+        total += selectedWash.price;
+      }
+  
       additionalSelections.forEach((service) => {
         const serviceData = additionalServices.find((s) => s.name === service);
         if (serviceData) {
           total += serviceData.price;
         }
       });
+  
+      if (subscription) {
+        total += 300; // Add monthly subscription fee
+      }
+  
       setTotalPrice(total);
     };
-
+  
     calculateTotalPrice();
-  }, [selectedWash, additionalSelections]);
+  }, [selectedWash, additionalSelections, subscription]);
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-
-    // Input validation
-    if (
-      !firstName ||
-      !lastName ||
-      !carModel ||
-      !email ||
-      !selectedWash ||
-      !date ||
-      !time ||
-      !serviceLocation
-    ) {
-      toast.error("Please fill in all required fields.", {
+  
+    if (!firstName || !lastName || !carModel || !email || (!isBooking && !subscription)) {
+      toast.error("Please fill in all required fields or select a subscription.", {
         position: "top-center",
         autoClose: 5000,
       });
       setLoading(false);
-      return; // Stop execution if any required field is missing
+      return;
     }
-
+  
     if (serviceLocation === "come" && !address) {
       toast.error("Please provide an address for home service.", {
         position: "top-center",
         autoClose: 5000,
       });
       setLoading(false);
-      return; // Stop execution if address is missing for "come" service
+      return;
     }
-
-    // Show confirmation dialog
+  
     const isConfirmed = window.confirm(
       "Are you sure you want to confirm this booking?"
     );
     if (!isConfirmed) {
       setLoading(false);
-      return; // Stop execution if the user cancels
+      return;
     }
-
-    const totalPrice =
-      selectedWash && selectedWash.price
-        ? Number(selectedWash.price) +
-          additionalSelections.reduce((acc, service) => {
-            const serviceData = additionalServices.find(
-              (s) => s.name === service
-            );
-            return acc + (serviceData ? Number(serviceData.price) : 0);
-          }, 0)
-        : 0;
-
-    console.log("Total Price Before Sending:", totalPrice); // Debugging log
-
+  
     const bookingData = {
       firstName,
       lastName,
@@ -167,7 +155,7 @@ function HomePage() {
       washType: selectedWash
         ? {
             name: selectedWash.name,
-            price: Number(selectedWash.price), // Ensure price is a number
+            price: Number(selectedWash.price),
             details: selectedWash.details,
           }
         : {},
@@ -175,7 +163,7 @@ function HomePage() {
         const serviceData = additionalServices.find((s) => s.name === service);
         return {
           name: service,
-          price: serviceData ? Number(serviceData.price) : 0, // Ensure price is a number
+          price: serviceData ? Number(serviceData.price) : 0,
         };
       }),
       date,
@@ -186,22 +174,21 @@ function HomePage() {
         : "No Subscription",
       serviceLocation,
       address: serviceLocation === "come" ? address : "",
-      totalPrice, // Use the validated total price
+      totalPrice, // Use the pre-calculated state
     };
-
-    console.log("Booking Data Sent to Backend:", bookingData); // Debugging log
-
+  
+    console.log("Booking Data Sent to Backend:", bookingData);
+  
     try {
       const response = await axios.post(
         "https://kiings-backend.onrender.com/api/book",
         bookingData
       );
-      console.log("Backend Response:", response.data); // Debugging log
-
+      console.log("Backend Response:", response.data);
+  
       const { redirectUrl } = response.data;
-
+  
       if (redirectUrl) {
-        // Redirect to Yoco checkout page
         window.location.href = redirectUrl;
       } else {
         toast.error("Failed to initiate payment.", {
@@ -219,6 +206,7 @@ function HomePage() {
       setLoading(false);
     }
   };
+  
 
   
   return (
