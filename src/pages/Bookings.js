@@ -1,36 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import moment from 'moment';
 
 const Bookings = () => {
-  const [email, setEmail] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
   const [bookings, setBookings] = useState([]);
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // Fetch bookings when the user enters their email
-  const fetchBookings = async () => {
-    if (!email || !firstName || !lastName) {
-      setError('All fields are required');
-      return;
-    }
+  useEffect(() => {
+    const fetchAllBookings = async () => {
+      try {
+        const response = await axios.get("https://kiings-backend.onrender.com/api/all-bookings");
+        setBookings(response.data);
+      } catch (error) {
+        const errorMessage = error.response ? error.response.data.error : 'Failed to fetch bookings';
+        setError(errorMessage);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    setLoading(true);
-    setError('');
-    try {
-      const response = await axios.get(`https://kiings-backend.onrender.com/api/my-bookings?email=${email}`);
-      setBookings(response.data);
-      setLoading(false);
-    } catch (error) {
-      const errorMessage = error.response ? error.response.data.error : 'Failed to fetch bookings';
-      setError(errorMessage);
-      setLoading(false);
-    }
-  };
+    fetchAllBookings();
+  }, []);
 
-  // Handle cancellation of a booking
   const cancelBooking = async (bookingId) => {
     try {
       const response = await axios.delete(`https://kiings-backend.onrender.com/api/cancel-booking/${bookingId}`);
@@ -42,126 +34,71 @@ const Bookings = () => {
     }
   };
 
-  // Categorize bookings into upcoming and past
-  const categorizeBookings = (bookings) => {
-    const now = moment();
-    const upcoming = [];
-    const past = [];
+  const now = moment();
+  const past = [];
+  const upcoming = [];
 
-    bookings.forEach((booking) => {
-      const bookingDateTime = moment(`${booking.date} ${booking.time}`, "YYYY-MM-DD HH:mm");
-      if (bookingDateTime.isBefore(now)) {
-        past.push(booking);
-      } else {
-        upcoming.push(booking);
-      }
-    });
-
-    return { upcoming, past };
-  };
-
-  // Get categorized bookings
-  const { upcoming, past } = categorizeBookings(bookings);
+  bookings.forEach((booking) => {
+    const bookingDateTime = moment(`${booking.date} ${booking.time}`, "YYYY-MM-DD HH:mm");
+    if (bookingDateTime.isBefore(now)) {
+      past.push(booking);
+    } else {
+      upcoming.push(booking);
+    }
+  });
 
   return (
-    <div className="container mt-5 mb-4">
-      <h1 className="text-center text-light mb-4">Check Your Bookings</h1>
+    <div className="container mt-5 mb-4 p-4 rounded" style={{ backgroundColor: '#1e1e2f', color: '#fff' }}>
+      <h1 className="text-center mb-4">All Bookings</h1>
 
-      <div className="row mb-3">
-        <div className="col-md-4">
-          <label htmlFor="firstName" className="form-label text-light">First Name</label>
-          <input
-            type="text"
-            id="firstName"
-            className="form-control"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            placeholder="First Name"
-          />
-        </div>
+      {loading && <p className="text-center">Loading bookings...</p>}
+      {error && <p className="text-danger text-center">{error}</p>}
+      {!loading && bookings.length === 0 && <p className="text-center text-muted">No bookings found.</p>}
 
-        <div className="col-md-4">
-          <label htmlFor="lastName" className="form-label text-light">Last Name</label>
-          <input
-            type="text"
-            id="lastName"
-            className="form-control"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            placeholder="Last Name"
-          />
-        </div>
-
-        <div className="col-md-4">
-          <label htmlFor="email" className="form-label text-light">Email Address</label>
-          <input
-            type="email"
-            id="email"
-            className="form-control"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-          />
-        </div>
-      </div>
-
-      <div className="text-center">
-        <button
-          className="btn btn-primary"
-          onClick={fetchBookings}
-          disabled={loading}
-        >
-          {loading ? 'Loading...' : 'Fetch Bookings'}
-        </button>
-      </div>
-
-      {error && <p className="text-danger text-center mt-3">{error}</p>}
-
-      {bookings.length === 0 && !loading && (
-        <p className="text-center mt-3 text-light">No bookings found.</p>
-      )}
-
-      {/* Past Bookings Section */}
-      {past.length > 0 && (
-        <div className="mt-4">
-          <h2 className="text-center">Past Bookings</h2>
-          <ul className="list-group">
-            {past.map((booking) => (
-              <li key={booking._id} className="list-group-item d-flex justify-content-between align-items-center">
-                <div>
-                  <p>{`${booking.firstName} ${booking.lastName} - ${booking.carModel} - ${booking.date} at ${booking.time}`}</p>
-                </div>
-                <button
-                  className="btn btn-danger btn-sm"
-                  disabled
-                >
-                  Booking Completed
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {/* Upcoming Bookings Section */}
+      {/* Upcoming Bookings */}
       {upcoming.length > 0 && (
         <div className="mt-4">
-          <h2 className="text-center">Upcoming Bookings</h2>
-          <ul className="list-group">
+          <h2 className="text-center mb-3">Upcoming Bookings</h2>
+          <div className="list-group">
             {upcoming.map((booking) => (
-              <li key={booking._id} className="list-group-item d-flex justify-content-between align-items-center">
-                <div>
-                  <p>{`${booking.firstName} ${booking.lastName} - ${booking.carModel} - ${booking.date} at ${booking.time}`}</p>
+              <div key={booking._id} className="list-group-item bg-dark text-white mb-2 rounded shadow-sm">
+                <div className="d-flex justify-content-between align-items-center">
+                  <div>
+                    <strong>{booking.firstName} {booking.lastName}</strong><br />
+                    {booking.carModel} | {booking.date} @ {booking.time}
+                  </div>
+                  <button
+                    className="btn btn-danger btn-sm"
+                    onClick={() => cancelBooking(booking._id)}
+                  >
+                    Cancel Booking
+                  </button>
                 </div>
-                <button
-                  className="btn btn-danger btn-sm"
-                  onClick={() => cancelBooking(booking._id)}
-                >
-                  Cancel Booking
-                </button>
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
+        </div>
+      )}
+
+      {/* Past Bookings */}
+      {past.length > 0 && (
+        <div className="mt-5">
+          <h2 className="text-center mb-3">Past Bookings</h2>
+          <div className="list-group">
+            {past.map((booking) => (
+              <div key={booking._id} className="list-group-item bg-secondary text-white mb-2 rounded shadow-sm">
+                <div className="d-flex justify-content-between align-items-center">
+                  <div>
+                    <strong>{booking.firstName} {booking.lastName}</strong><br />
+                    {booking.carModel} | {booking.date} @ {booking.time}
+                  </div>
+                  <button className="btn btn-light btn-sm" disabled>
+                    Booking Completed
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>
