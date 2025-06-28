@@ -1,34 +1,80 @@
-.nav-logo{
-    width:25%;
+.nav-logo {
+  width: 120px; /* Fixed width for consistency */
+  max-width: 100%; /* Responsive */
+  height: auto;
+  display: block;
+  margin: 0 auto; /* Center horizontally */
+  filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3)); /* subtle shadow for depth */
 }
 
-button{
-    background-color: gold !important;
+button {
+  background-color: #dccc34 !important; /* Softer gold */
+  border: none !important;
+  color: #333333 !important; /* Dark text for contrast */
+  font-weight: 600;
+  padding: 0.5rem 1.25rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button:hover,
+button:focus {
+  background-color: #b8a82b !important; /* Darker gold on hover */
+  color: #fff !important;
+  outline: none;
+  box-shadow: 0 0 8px rgba(184, 168, 43, 0.7);
+  cursor: pointer;
 }
 
 .home-page {
-    color: #ffffff; /* Default text color */
-  }
-  
-  .form-label {
-    font-weight: 500; /* Bold labels for better visibility */
-  }
-  
-  .list-group-item {
-    background-color: rgba(0, 0, 0, 0.5); /* Darker background for list items */
-  }
-  
-  .btn-warning {
-    background-color: #ffc107; /* Custom color for buttons */
-  }
-  
+  color: #ffffff; /* White text for strong contrast */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-shadow: 0 0 4px rgba(0,0,0,0.6);
+}
 
-  @keyframes scrollText {
-    from {
-      left: 100%;
-    }
-    to {
-      left: -100%;
-    }
+.form-label {
+  font-weight: 600; /* Slightly bolder for emphasis */
+  color: #444; /* Dark gray for readability */
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+
+.list-group-item {
+  background-color: rgba(0, 0, 0, 0.6); /* Slightly darker for better contrast */
+  color: #f0f0f0;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.3s ease;
+}
+
+.list-group-item:hover,
+.list-group-item:focus {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  cursor: pointer;
+}
+
+.btn-warning {
+  background-color: #ffc107 !important;
+  border-color: #e0a800 !important;
+  color: #212529 !important;
+  font-weight: 600;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-warning:hover,
+.btn-warning:focus {
+  background-color: #e0a800 !important;
+  border-color: #c69500 !important;
+  color: #fff !important;
+  box-shadow: 0 0 8px rgba(224, 168, 0, 0.7);
+}
+
+@keyframes scrollText {
+  from {
+    left: 100%;
   }
-  
+  to {
+    left: -100%;
+  }
+}
