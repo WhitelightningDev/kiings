@@ -7,8 +7,7 @@ function Success() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    // Parse query params from hash URL: "#/success?bookingId=...&sessionId=..."
-    const hash = window.location.hash; // e.g., "#/success?bookingId=abc&sessionId=xyz"
+    const hash = window.location.hash; // e.g. "#/success?bookingId=abc&sessionId=xyz"
     const queryString = hash.includes("?") ? hash.split("?")[1] : "";
     const params = new URLSearchParams(queryString);
 
@@ -22,24 +21,25 @@ function Success() {
     }
 
     if (!sessionId) {
-      // If no sessionId, skip backend confirmation and just show success
-      setMessage("Booking successful! We will email you once payment is confirmed.");
+      // Booking was created, but payment not initiated or user returned without paying
+      setMessage("Booking received! Awaiting payment confirmation.");
       return;
     }
 
-    // Call backend to confirm payment
+    // Confirm payment with backend (this triggers the confirmation email if payment is successful)
     axios
       .post("https://kiings-backend.onrender.com/api/payments/confirm", {
         sessionId,
-        status: "successful",
+        status: "successful", // Manually telling backend it's successful — depends on Yoco redirect behavior
       })
-      .then(() => {
+      .then((res) => {
+        console.log("Payment confirmed:", res.data);
         setMessage("Your payment was confirmed successfully! Confirmation email sent.");
       })
       .catch((err) => {
+        console.error("Payment confirmation error:", err);
         setError("Payment confirmation failed. Please contact support.");
         setMessage("");
-        console.error("Payment confirmation error:", err);
       });
   }, []);
 
