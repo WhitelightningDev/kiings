@@ -11,6 +11,11 @@ export const washTypes = [
     price: 170,
     details: "(Shampoo & Wax, Dash Interior, Silicone, Tyre Shine.)",
   },
+  {
+    name: "test wash",
+    price: 5,
+    details: "(Shampoo & Wax, Tire Shine)"
+  }
 ];
 
 export const additionalServices = [
