@@ -1,0 +1,91 @@
+/* styles/Success.css */
+
+.success-wrapper {
+  max-width: 80rem; /* same as max-w-7xl */
+  padding: 1.5rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  margin: 0 auto;
+}
+
+.success-card {
+  position: relative;
+  overflow: hidden;
+  background-color: #111827; /* tailwind bg-gray-900 */
+  padding: 6rem 1.5rem;
+  border-radius: 1rem; /* rounded-2xl */
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+  color: white;
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .success-card {
+    border-radius: 1.5rem; /* sm:rounded-3xl */
+    padding-left: 6rem;
+    padding-right: 6rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .success-card {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+  }
+}
+
+.status-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 1.5rem;
+}
+
+.status-message h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.status-message p {
+  font-size: 1.125rem;
+  color: #d1d5db; /* text-gray-300 */
+}
+
+.status-message.success {
+  color: #34d399; /* text-green-400 */
+}
+
+.status-message.error {
+  color: #f87171; /* text-red-400 */
+}
+
+.button-container {
+  margin-top: 2.5rem;
+}
+
+.home-button {
+  background-color: #ffffff;
+  color: #111827;
+  font-weight: 600;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  display: inline-block;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.home-button:hover {
+  background-color: #e5e7eb;
+}
+
+/* SVG background styling */
+.svg-background {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: -1;
+  height: 64rem;
+  width: 64rem;
+  transform: translate(-50%, -50%);
+}

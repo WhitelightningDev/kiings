@@ -1,0 +1,1 @@
+export {default as erroIcon} from '../assets/errorIcon.png'

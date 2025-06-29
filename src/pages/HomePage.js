@@ -22,6 +22,8 @@ function HomePage() {
   const [serviceLocation, setServiceLocation] = useState("come");
   const [address, setAddress] = useState("");
   const isBooking = selectedWash && date && time;
+  const [slotsLoading, setSlotsLoading] = useState(false);
+
 
   const handleWashChange = (event) => {
     const selectedWashType = washTypes.find(
@@ -43,24 +45,27 @@ function HomePage() {
 
   useEffect(() => {
     const fetchAvailableSlots = async () => {
-      if (date) {
-        try {
-          const response = await axios.get(
-            `https://kiings-backend.onrender.com/api/available-slots?date=${date}`
-          );
-          setAvailableSlots(response.data);
-          setTime(""); // Reset selected time when new slots are fetched
-        } catch (error) {
-          console.error("Error fetching available slots:", error);
-          toast.error("Error fetching available slots. Please try again.", {
-            position: "top-center",
-            autoClose: 5000,
-          });
-        }
-      } else {
-        setAvailableSlots([]);
-      }
-    };
+  if (date) {
+    setSlotsLoading(true);
+    try {
+      const response = await axios.get(
+        `https://kiings-backend.onrender.com/api/available-slots?date=${date}`
+      );
+      setAvailableSlots(response.data);
+      setTime("");
+    } catch (error) {
+      toast.error("Error fetching available slots. Please try again.", {
+        position: "top-center",
+        autoClose: 5000,
+      });
+    } finally {
+      setSlotsLoading(false);
+    }
+  } else {
+    setAvailableSlots([]);
+  }
+};
+
 
     fetchAvailableSlots();
   }, [date]);
@@ -191,7 +196,7 @@ function HomePage() {
   return (
     <>
       {/* Top Banner */}
-      <div className="bg-primary text-white py-5 mb-3 position-relative overflow-hidden">
+      <div className="bg-primary text-white py-4  position-relative overflow-hidden">
         <div
           style={{
             whiteSpace: "nowrap",
@@ -209,24 +214,24 @@ function HomePage() {
         <ToastContainer />
 
         {/* Header Card */}
-        <div className="card shadow-sm mb-4">
-          <div className="card-body text-center">
-            <img
-              src={NavLogo}
-              alt="Kings Logo"
-              style={{ width: "100px" }}
-              className="mb-3"
-            />
-            <h1 className="card-title">Book Your Car Wash</h1>
-            <p className="card-text">
-              Fill in the form to schedule your car wash.
-            </p>
-          </div>
-        </div>
+       <div className="booking-header-container">
+  <div className="booking-header-content">
+    <img
+      src={NavLogo}
+      alt="Kings Logo"
+      className="booking-logo"
+    />
+    <h1 className="booking-title">Book Your Car Wash</h1>
+    <p className="booking-subtitle">
+      Fill in the form to schedule your car wash.
+    </p>
+  </div>
+</div>
 
         {/* Booking Form Card */}
-        <div className="card shadow-sm">
-          <div className="card-body">
+        <div className="form-section-container">
+  <div className="form-content">
+
             <h4 className="mb-4">Booking Details</h4>
 
             <form noValidate onSubmit={handleSubmit}>
@@ -352,21 +357,29 @@ function HomePage() {
                 </div>
 
                 <div className="col-md-6">
-                  <label className="form-label">Preferred Time *</label>
-                  <select
-                    className="form-select"
-                    value={time}
-                    onChange={(e) => setTime(e.target.value)}
-                    required
-                  >
-                    <option value="">Select a time</option>
-                    {availableSlots.map((slot) => (
-                      <option key={slot} value={slot}>
-                        {slot}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+  <label className="form-label">Preferred Time *</label>
+  {slotsLoading ? (
+    <div className="d-flex align-items-center justify-content-start gap-2">
+      <div className="spinner-border text-warning" role="status" />
+      <span className="text-light">Loading available times...</span>
+    </div>
+  ) : (
+    <select
+      className="form-select"
+      value={time}
+      onChange={(e) => setTime(e.target.value)}
+      required
+    >
+      <option value="">Select a time</option>
+      {availableSlots.map((slot) => (
+        <option key={slot} value={slot}>
+          {slot}
+        </option>
+      ))}
+    </select>
+  )}
+</div>
+
 
                 {/* --- Location --- */}
                 <h5 className="mt-4">Service Location</h5>
@@ -418,7 +431,7 @@ function HomePage() {
                   </div>
                 )}
 
-                {/* --- Subscription --- */}
+                {/* --- Subscription ---
                 <div className="col-12 mt-3">
                   <div className="form-check">
                     <input
@@ -432,7 +445,7 @@ function HomePage() {
                       Monthly Subscription - ZAR 300
                     </label>
                   </div>
-                </div>
+                </div> */}
 
                 {/* --- Total & Submit --- */}
                 <div className="col-12 mt-4">
