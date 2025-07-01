@@ -3,7 +3,11 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import NavLogo from "../assets/kings-logo.png";
-import { washTypes, additionalServices } from "../functions/washData";
+import {
+  washTypes,
+  additionalServices,
+  reasonsByExtra,
+} from "../functions/washData";
 import "../styles/css/homepage.css";
 
 function HomePage() {
@@ -23,7 +27,7 @@ function HomePage() {
   const [address, setAddress] = useState("");
   const isBooking = selectedWash && date && time;
   const [slotsLoading, setSlotsLoading] = useState(false);
-
+  const [modalOpen, setModalOpen] = useState(false);
 
   const handleWashChange = (event) => {
     const selectedWashType = washTypes.find(
@@ -31,6 +35,9 @@ function HomePage() {
     );
     setSelectedWash(selectedWashType);
   };
+
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
 
   const handleServiceChange = (event) => {
     const { value, checked } = event.target;
@@ -45,27 +52,26 @@ function HomePage() {
 
   useEffect(() => {
     const fetchAvailableSlots = async () => {
-  if (date) {
-    setSlotsLoading(true);
-    try {
-      const response = await axios.get(
-        `https://kiings-backend.onrender.com/api/available-slots?date=${date}`
-      );
-      setAvailableSlots(response.data);
-      setTime("");
-    } catch (error) {
-      toast.error("Error fetching available slots. Please try again.", {
-        position: "top-center",
-        autoClose: 5000,
-      });
-    } finally {
-      setSlotsLoading(false);
-    }
-  } else {
-    setAvailableSlots([]);
-  }
-};
-
+      if (date) {
+        setSlotsLoading(true);
+        try {
+          const response = await axios.get(
+            `https://kiings-backend.onrender.com/api/available-slots?date=${date}`
+          );
+          setAvailableSlots(response.data);
+          setTime("");
+        } catch (error) {
+          toast.error("Error fetching available slots. Please try again.", {
+            position: "top-center",
+            autoClose: 5000,
+          });
+        } finally {
+          setSlotsLoading(false);
+        }
+      } else {
+        setAvailableSlots([]);
+      }
+    };
 
     fetchAvailableSlots();
   }, [date]);
@@ -214,24 +220,19 @@ function HomePage() {
         <ToastContainer />
 
         {/* Header Card */}
-       <div className="booking-header-container">
-  <div className="booking-header-content">
-    <img
-      src={NavLogo}
-      alt="Kings Logo"
-      className="booking-logo"
-    />
-    <h1 className="booking-title">Book Your Car Wash</h1>
-    <p className="booking-subtitle">
-      Fill in the form to schedule your car wash.
-    </p>
-  </div>
-</div>
+        <div className="booking-header-container">
+          <div className="booking-header-content">
+            <img src={NavLogo} alt="Kings Logo" className="booking-logo" />
+            <h1 className="booking-title">Book Your Car Wash</h1>
+            <p className="booking-subtitle">
+              Fill in the form to schedule your car wash.
+            </p>
+          </div>
+        </div>
 
         {/* Booking Form Card */}
         <div className="form-section-container">
-  <div className="form-content">
-
+          <div className="form-content">
             <h4 className="mb-4">Booking Details</h4>
 
             <form noValidate onSubmit={handleSubmit}>
@@ -306,18 +307,130 @@ function HomePage() {
                 </div>
 
                 {selectedWash && (
-                  <div className="col-12">
-                    <small className="text-muted">
-                      <strong>Details:</strong> {selectedWash.details}
-                    </small>
-                  </div>
+                  <>
+                    <div className="col-12 mt-2">
+                      <small className="text-muted d-block">
+                        <strong>Details:</strong> {selectedWash.details}
+                      </small>
+                    </div>
+
+                    {selectedWash.recommendedExtras &&
+                      selectedWash.recommendedExtras.length > 0 && (
+                        <div className="col-12 mt-3">
+                          <div
+                            className="p-3 rounded text-white fw-bold"
+                            style={{
+                              backgroundColor: "#ff6600",
+                              fontSize: "1.2rem",
+                              animation: "pulse 2s infinite",
+                              boxShadow: "0 0 10px 2px rgba(255, 102, 0, 0.7)",
+                              userSelect: "none",
+                              cursor: "pointer",
+                            }}
+                            onClick={openModal}
+                            title="Tap to discover why these extras are worth it!"
+                          >
+                            <span
+                              role="img"
+                              aria-label="star"
+                              style={{ marginRight: "8px" }}
+                            >
+                              🌟
+                            </span>
+                            Highly Recommended Extras:{" "}
+                            {selectedWash.recommendedExtras.join(", ")}
+                            <span
+                              role="img"
+                              aria-label="thumbs up"
+                              style={{ marginLeft: "8px" }}
+                            >
+                              👍
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                  </>
                 )}
+
+                {/* Modal */}
+                {modalOpen && (
+                  <>
+                    <div
+                      className="modal-backdrop"
+                      onClick={closeModal}
+                      style={{
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        width: "100vw",
+                        height: "100vh",
+                        backgroundColor: "rgba(0,0,0,0.5)",
+                        zIndex: 1000,
+                      }}
+                    />
+                    <div
+                      className="modal-content"
+                      role="dialog"
+                      aria-modal="true"
+                      style={{
+                        position: "fixed",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        backgroundColor: "#fff",
+                        padding: "2rem",
+                        borderRadius: "12px",
+                        maxWidth: "420px",
+                        width: "90%",
+                        boxShadow: "0 8px 16px rgba(0,0,0,0.25)",
+                        zIndex: 1001,
+                      }}
+                    >
+                      <h4 className="mb-3 text-center text-dark">
+                        ✨ Why You’ll Love These Extras
+                      </h4>
+                      <ul style={{ paddingLeft: "1.25rem" }}>
+                        {selectedWash.recommendedExtras.map((extra) => (
+                          <li key={extra} className="mb-2">
+                            <strong>{extra}:</strong>{" "}
+                            {reasonsByExtra[extra] ||
+                              "This extra enhances your service for a better finish."}
+                          </li>
+                        ))}
+                      </ul>
+                      <button
+                        onClick={closeModal}
+                        style={{
+                          marginTop: "1.5rem",
+                          backgroundColor: "#ff6600",
+                          border: "none",
+                          padding: "0.6rem 1.2rem",
+                          color: "#fff",
+                          fontWeight: "bold",
+                          borderRadius: "6px",
+                          width: "100%",
+                          cursor: "pointer",
+                        }}
+                      >
+                        Got it!
+                      </button>
+                    </div>
+                  </>
+                )}
+
+                <style>{`
+  @keyframes pulse {
+    0% { box-shadow: 0 0 10px 2px rgba(255, 102, 0, 0.7); }
+    50% { box-shadow: 0 0 20px 6px rgba(255, 102, 0, 1); }
+    100% { box-shadow: 0 0 10px 2px rgba(255, 102, 0, 0.7); }
+  }
+`}</style>
 
                 <div className="col-12">
                   <label className="form-label">Additional Services</label>
                   <div className="row">
                     {additionalServices.map((service) => (
-                      <div className="col-sm-6" key={service.name}>
+                      <div className="col-sm-6 mb-3" key={service.name}>
                         <div className="form-check">
                           <input
                             className="form-check-input"
@@ -333,9 +446,14 @@ function HomePage() {
                             className="form-check-label"
                             htmlFor={`service-${service.name}`}
                           >
-                            {service.name} - ZAR {service.price.toFixed(2)}
+                            {service.name} – ZAR {service.price.toFixed(2)}
                           </label>
                         </div>
+                        {service.details && (
+                          <small className="text-muted d-block ms-4">
+                            {service.details}
+                          </small>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -357,29 +475,33 @@ function HomePage() {
                 </div>
 
                 <div className="col-md-6">
-  <label className="form-label">Preferred Time *</label>
-  {slotsLoading ? (
-    <div className="d-flex align-items-center justify-content-start gap-2">
-      <div className="spinner-border text-warning" role="status" />
-      <span className="text-light">Loading available times...</span>
-    </div>
-  ) : (
-    <select
-      className="form-select"
-      value={time}
-      onChange={(e) => setTime(e.target.value)}
-      required
-    >
-      <option value="">Select a time</option>
-      {availableSlots.map((slot) => (
-        <option key={slot} value={slot}>
-          {slot}
-        </option>
-      ))}
-    </select>
-  )}
-</div>
-
+                  <label className="form-label">Preferred Time *</label>
+                  {slotsLoading ? (
+                    <div className="d-flex align-items-center justify-content-start gap-2">
+                      <div
+                        className="spinner-border text-warning"
+                        role="status"
+                      />
+                      <span className="text-light">
+                        Loading available times...
+                      </span>
+                    </div>
+                  ) : (
+                    <select
+                      className="form-select"
+                      value={time}
+                      onChange={(e) => setTime(e.target.value)}
+                      required
+                    >
+                      <option value="">Select a time</option>
+                      {availableSlots.map((slot) => (
+                        <option key={slot} value={slot}>
+                          {slot}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+                </div>
 
                 {/* --- Location --- */}
                 <h5 className="mt-4">Service Location</h5>
