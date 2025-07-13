@@ -57,14 +57,14 @@ export const additionalServices = [
   },
   {
     name: "Interior Cleans Only",
-    price: 60,
-    details: "Vacuum, Air vent covers cleaned, Dashboard shine & Silicone Spray",
+    price: 80,
+    details: "Vacuum, Air vent covers cleaned, Dashboard shine & Silicone Spray, Door pannel clean",
   },
-  {
-    name: "Engine Clean",
-    price: 40,
-    details: "Degreasing and cleaning of engine bay. Safe and non-corrosive.",
-  },
+  // {
+  //   name: "Engine Clean",
+  //   price: 40,
+  //   details: "Degreasing and cleaning of engine bay. Safe and non-corrosive.",
+  // },
   {
     name: "Ceramic Infused Spray",
     price: 50,
@@ -75,6 +75,11 @@ export const additionalServices = [
     price: 200,
     details: "Restores clarity to foggy or yellowed headlights.",
   },
+  {
+    name: "Body Gloss",
+    price: 50,
+    details: "Boost's shine, enhances paint depth, and leaves a slick, glossy finish on your car"
+  }
 ];
 
 
