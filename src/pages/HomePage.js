@@ -22,7 +22,7 @@ function HomePage() {
   const [carModel, setCarModel] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [subscription, setSubscription] = useState(false);
+  const [subscription,] = useState(false);
   const [serviceLocation, setServiceLocation] = useState("come");
   const [address, setAddress] = useState("");
   const isBooking = selectedWash && date && time;
@@ -95,11 +95,27 @@ function HomePage() {
         total += 300; // Add monthly subscription fee
       }
 
+      // Add R70 if selected time is after 6:00 PM
+      if (time) {
+        const [rawTime, meridiem] = time.split(" ");
+        let [hour] = rawTime.split(":").map(Number);
+
+        if (meridiem === "PM" && hour !== 12) {
+          hour += 12;
+        } else if (meridiem === "AM" && hour === 12) {
+          hour = 0;
+        }
+
+        if (hour >= 18) {
+          total += 70;
+        }
+      }
+
       setTotalPrice(total);
     };
 
     calculateTotalPrice();
-  }, [selectedWash, additionalSelections, subscription]);
+  }, [selectedWash, additionalSelections, subscription, time]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
