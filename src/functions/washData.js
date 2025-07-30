@@ -1,19 +1,19 @@
 export const washTypes = [
   {
     name: "Wash n Go",
-    price: 80,
+    price: 120,
     details: "Shampoo & Wax, Tire Shine",
     recommendedExtras: ["Polish Tyres", "Ceramic Infused Spray"]
   },
   {
     name: "Wash & Vacuum",
-    price: 120,
+    price: 170,
     details: "Shampoo & Wax, Vacuum, Boot & Dash, Interior, Silicone Spray, Tyre Shine",
     recommendedExtras: ["Interior Cleans Only", "Polish Tyres"]
   },
   {
     name: "Wash & Vacuum: Large SUVs & Bakkies",
-    price: 170,
+    price: 200,
     details: "Shampoo & Wax, Dash Interior, Silicone, Tyre Shine",
     recommendedExtras: ["Interior Cleans Only", "Polish Tyres"]
   },
@@ -57,7 +57,7 @@ export const additionalServices = [
   },
   {
     name: "Interior Cleans Only",
-    price: 80,
+    price: 100,
     details: "Vacuum, Air vent covers cleaned, Dashboard shine & Silicone Spray, Door pannel clean",
   },
   // {
@@ -67,7 +67,7 @@ export const additionalServices = [
   // },
   {
     name: "Ceramic Infused Spray",
-    price: 50,
+    price: 100,
     details: "Adds a hydrophobic layer to enhance shine and protect paint.",
   },
   {
@@ -77,7 +77,7 @@ export const additionalServices = [
   },
   {
     name: "Body Gloss",
-    price: 50,
+    price: 100,
     details: "Boost's shine, enhances paint depth, and leaves a slick, glossy finish on your car"
   }
 ];
