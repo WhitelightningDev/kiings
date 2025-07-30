@@ -65,6 +65,11 @@ export const additionalServices = [
   //   price: 40,
   //   details: "Degreasing and cleaning of engine bay. Safe and non-corrosive.",
   // },
+ {
+  name: "Leather Clean",
+  price: 50,
+  details: "A conditioning product specifically designed to nourish, protect and restore leather surfaces.",
+},
   {
     name: "Ceramic Infused Spray",
     price: 150,
