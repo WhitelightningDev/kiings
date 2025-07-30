@@ -50,11 +50,11 @@ export const washTypes = [
 ];
 
 export const additionalServices = [
-  {
-    name: "Polish Tyres",
-    price: 30,
-    details: "High-gloss finish on all tyres using premium polish.",
-  },
+  // {
+  //   name: "Polish Tyres",
+  //   price: 30,
+  //   details: "High-gloss finish on all tyres using premium polish.",
+  // },
   {
     name: "Interior Cleans Only",
     price: 100,
@@ -67,7 +67,7 @@ export const additionalServices = [
   // },
   {
     name: "Ceramic Infused Spray",
-    price: 100,
+    price: 150,
     details: "Adds a hydrophobic layer to enhance shine and protect paint.",
   },
   {
